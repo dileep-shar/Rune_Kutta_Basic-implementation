@@ -1,0 +1,129 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <math.h>
+#include <float.h>
+#include <time.h>
+
+float a,b,c,d,e,m,n,h = FLT_MIN;
+float fun1(float x,float y){
+   //any function here
+   return a*exp(x)+b*exp(y);
+}
+float fun2(float x,float y){
+   //any function here
+   return a*(pow(x,m)*pow(y,n));
+}
+float fun3(float x,float y){
+   //any function here
+   return a*pow(x,m) - b*pow(y,m);
+}float fun4(float x,float y){
+   //any function here
+   return a*pow(logf(x),m)+b*pow(logf(y),n);
+}float fun5(float x,float y){
+   //any function here
+   return a*pow(sin(x),m)+b*pow(cos(y),n);
+}
+
+ void runge_kutta(float x0,float y0,float h,float reqfuatX, int t){
+    // No of iterations required 
+    // float *fun();
+    float (*p)(float,float);
+    if(t==1)      p = &fun1;
+    else if(t==2) p = &fun2;
+    else if(t==3) p = &fun3;
+    else if(t==4) p = &fun4;
+    else if(t==5) p = &fun5;
+    // else if(t==6) p = &fun6;
+    // else if(t==7) p = &fun7;
+    // else if(t==8) p = &fun8;
+    // else if(t==9) p = &fun9;
+    // else if(t==10) p = &fun10;
+    // else if(t==11) p = &fun11;
+    // else if(t==12) p = &fun12;
+    int n = (int)((reqfuatX-x0)/h);
+    
+    float k1,k2,k3,k4;
+    
+    for(int i=0;i<n;i++){
+       k1 = h*p(x0,y0);
+       k2 = h*p(x0+h/2,y0+k1/2);
+       k3 = h*p(x0+h/2,y0+k2/2);
+       k4 = h*p(x0+h,y0+k3);
+       y0+=(k1+2*k2+2*k3+k4)/6;
+      printf("k1 = %.5f \nk2 = %.5f\nk3 = %.5f \nk4 = %.5f\n\n",k1,k2,k3,k4);
+      printf("Now y(%.2f)=(k1+2*k2+2*k3+k4)/6\n",(x0+h));
+      printf("=>  y(%.2f)=(%.2f+2*%.2f+2*%.2f+%.2f)/6\n\n",(x0+h),k1,k2,k3,k4);
+      printf("    Therefore y(%.2f)=%.4f\n\n\n",(x0+h),y0);
+       x0+=h;
+}
+      printf(" y(%.2f)=%.4f\n",(x0),y0);
+ }
+    
+
+int main()
+{   
+    printf("\t\t\tRunge Kutta Method of Fourth Order Approximation\n\n");
+    float x,x0,y0;int t;
+    printf("Press the following numbers for corresponding equation i.e y'=:\n");
+    printf("1 -> ae^(mx) + be^(ny)\n");
+    printf("2 -> a(x^m)y^n\n");
+    printf("3 -> Ax^m - By^n\n");
+    printf("4 -> a(log(x))^m+b(log(y))^n\n5 -> a(sin(x))^m+b(cos(y))^n\n");
+    printf("6 -> a(sin(y)^m+b(cos(x))^n\n5 -> a(tan(x))^m+b(cot(y))^n\n");
+     scanf("%d",&t);
+     
+         if(t==1 || t==3 || t==4 || t==5 || t==6){
+         printf("Enter the value of m\n");
+         scanf("%f",&m);
+        
+         printf("Enter the value of n\n");
+         scanf("%f",&n);
+         
+          printf("Enter the value of a\n");
+         scanf("%f",&a);
+         
+         printf("Enter the value of b\n");
+         scanf("%f",&b);
+        
+         
+     }else if(t==2){
+         printf("Enter the value of m\n");
+         scanf("%f",&m);
+         printf("Enter the value of n\n");
+         scanf("%f",&n);
+         printf("Enter the value of a\n");
+         scanf("%f",&a);
+     }
+
+     srand(time(0));
+    
+    printf("Enter the value of initial value of x i.e x0:\n");
+    scanf("%f",&x0);
+    printf("Enter the value of initial value of y i.e y0:\n");
+    scanf("%f",&y0);
+    printf("Enter the value of value of x at which you nedd to claculate y:\n");
+    scanf("%f",&x);
+    char inpH;
+    char calcH;
+    printf("Do you want to enter the value of h\nNote:answer in Y or N\n");
+    scanf("%s",&inpH);
+    if(inpH=='Y'){
+        printf("Enter the value of h\n");
+        scanf("%f",&h);
+    }else if(inpH=='N'){
+        printf("\nDo you want fastness or precision\nNote:answer in F or P\n");
+    
+        scanf("\n%c",&calcH);
+         if(calcH=='F'){ h = x0;}
+        else{
+        
+        int rando = ((rand()%(9001))+1000);
+        h = 1.0/rando;
+        
+        }
+    }
+   
+    runge_kutta(x0,y0,h,x,t);
+    return 0;
+}
